@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
-  const scrollToAnalyze = () => {
-    document.getElementById("analyze")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section className="section-spacing pt-32 md:pt-40">
@@ -28,9 +26,9 @@ const HeroSection = () => {
               Paste any legal clause. Get plain English answers. Know exactly what you're signing.
             </p>
 
-            <button onClick={scrollToAnalyze} className="btn-primary text-base">
+            <Link to="/analyze" className="btn-primary text-base">
               Start Analyzing <ArrowRight size={18} />
-            </button>
+            </Link>
           </motion.div>
 
           {/* Right mockup */}
