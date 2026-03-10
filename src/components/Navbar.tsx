@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,9 +24,9 @@ const Navbar = () => {
           <button onClick={() => scrollTo("how-it-works")} className="font-sans text-sm text-muted-foreground hover:text-foreground transition-colors">
             How It Works
           </button>
-          <button onClick={() => scrollTo("analyze")} className="btn-primary !px-6 !py-2.5 text-sm">
+          <Link to="/analyze" className="btn-primary !px-6 !py-2.5 text-sm">
             Try Now
-          </button>
+          </Link>
         </div>
 
         <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
@@ -37,7 +38,7 @@ const Navbar = () => {
         <div className="md:hidden bg-background border-b border-border px-6 py-4 flex flex-col gap-3">
           <button onClick={() => scrollTo("features")} className="font-sans text-sm text-muted-foreground text-left">Features</button>
           <button onClick={() => scrollTo("how-it-works")} className="font-sans text-sm text-muted-foreground text-left">How It Works</button>
-          <button onClick={() => scrollTo("analyze")} className="btn-primary !px-6 !py-2.5 text-sm w-fit">Try Now</button>
+          <Link to="/analyze" className="btn-primary !px-6 !py-2.5 text-sm w-fit">Try Now</Link>
         </div>
       )}
     </nav>
