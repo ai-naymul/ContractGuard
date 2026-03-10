@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# ContractGuard
 
-## Project info
+AI-powered contract analysis that explains legal jargon in plain English.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Live Demo:** [contract-clarity-tau.vercel.app](https://contract-clarity-tau.vercel.app)
 
-## How can I edit this code?
+## What it does
 
-There are several ways of editing your application.
+Upload a contract (PDF/TXT) or paste text, and ContractGuard will:
+- Identify risky clauses and red flags
+- Explain what they mean in simple terms
+- Rate the risk level (1-10)
+- Suggest what actions to take
 
-**Use Lovable**
+## Built with DigitalOcean Gradient AI
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Model:** DeepSeek R1 Distill Llama 70B via Gradient AI Agents
+- **Knowledge Base:** Custom training data with 60+ contract examples covering leases, employment, loans, and terms of service
+- **RAG:** Embeddings-based retrieval for context-aware analysis
 
-Changes made via Lovable will be committed automatically to this repo.
+See [`docs/training/`](./docs/training/) for the knowledge base and agent prompt.
 
-**Use your preferred IDE**
+## Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- React + TypeScript + Vite
+- Tailwind CSS + shadcn/ui
+- Vercel Serverless Functions
+- pdf-parse for PDF text extraction
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Run Locally
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+For the API to work, create `.env`:
+```
+GRADIENT_ENDPOINT_URL=your_gradient_agent_url
+GRADIENT_API_KEY=your_api_key
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deploy
 
-**Use GitHub Codespaces**
+```bash
+vercel --prod
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Add environment variables in Vercel dashboard.
 
-## What technologies are used for this project?
+## License
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+MIT
