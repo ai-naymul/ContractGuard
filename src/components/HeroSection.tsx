@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
-  const scrollToAnalyze = () => {
-    document.getElementById("analyze")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section className="section-spacing pt-32 md:pt-40">
