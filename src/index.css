@@ -54,7 +54,7 @@
     --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
     --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
     --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.08);
-    --green-glow: 0 0 0 3px hsl(150 33% 26% / 0.15);
+    --green-glow: 0 0 0 3px hsl(220 10% 18% / 0.15);
 
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-sans: 'Inter', system-ui, sans-serif;
