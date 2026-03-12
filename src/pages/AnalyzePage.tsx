@@ -225,8 +225,11 @@ const AnalyzePage = () => {
                 <h1 className="font-serif text-4xl md:text-5xl font-medium text-foreground tracking-tight">
                   ContractGuard
                 </h1>
-                <p className="font-sans text-muted-foreground mt-3 text-base">
-                  AI-Powered Consumer Protection
+                <p className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="font-sans text-xs">
+                    Powered by <span className="text-primary font-medium">DigitalOcean Gradient AI</span>
+                  </span>
                 </p>
               </div>
 
