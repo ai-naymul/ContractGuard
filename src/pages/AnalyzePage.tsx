@@ -1,8 +1,15 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft, Upload, FileText, X, File } from "lucide-react";
+import { ArrowRight, ArrowLeft, Upload, FileText, X, File, FileSearch, Scale, AlertTriangle, CheckCircle2, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnalysisResults, { AnalysisData } from "@/components/AnalysisResults";
+
+const analysisSteps = [
+  { icon: FileSearch, label: "Reading document", detail: "Extracting text content" },
+  { icon: Scale, label: "Analyzing clauses", detail: "Identifying key terms" },
+  { icon: AlertTriangle, label: "Scanning for risks", detail: "Checking for red flags" },
+  { icon: Shield, label: "Generating report", detail: "Preparing your results" },
+];
 
 const quickOptions = [
   { emoji: "🏠", label: "Lease Clause", sample: 'The landlord reserves the right to terminate this lease with 7 days notice for any reason, and tenant forfeits all deposits upon termination. Landlord may enter the premises at any time without prior notice for inspection purposes.' },
@@ -20,6 +27,7 @@ const AnalyzePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -164,6 +172,20 @@ const AnalyzePage = () => {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [showResults]);
+
+  // Animate through analysis steps
+  useEffect(() => {
+    if (isAnalyzing) {
+      setAnalysisStep(0);
+      const interval = setInterval(() => {
+        setAnalysisStep((prev) => {
+          if (prev < analysisSteps.length - 1) return prev + 1;
+          return prev;
+        });
+      }, 2500);
+      return () => clearInterval(interval);
+    }
+  }, [isAnalyzing]);
 
   const canAnalyze = text.trim().length > 10 || uploadedFile;
 
@@ -330,23 +352,101 @@ const AnalyzePage = () => {
           ) : isAnalyzing ? (
             <motion.div
               key="analyzing"
-              className="w-full max-w-2xl text-center"
+              className="w-full max-w-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="flex flex-col items-center gap-4">
-                <div className="relative w-14 h-14">
-                  <div className="absolute inset-0 rounded-full border-2 border-border" />
-                  <div className="absolute inset-0 rounded-full border-2 border-foreground border-t-transparent animate-spin" />
+              {/* Document being analyzed */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="card-elevated rounded-2xl p-5 mb-6"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <FileText size={20} className="text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-sans text-sm font-medium text-foreground truncate">
+                      {uploadedFile ? uploadedFile.name : 'Contract clause'}
+                    </p>
+                    <p className="font-sans text-xs text-muted-foreground">
+                      {uploadedFile ? `${(uploadedFile.size / 1024).toFixed(1)} KB` : `${text.length} characters`}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-sans text-base font-medium text-foreground">Analyzing your contract...</p>
-                  <p className="font-sans text-sm text-muted-foreground mt-2">
-                    {uploadedFile ? `Reading ${uploadedFile.name}` : 'Scanning for risks and unfair terms'}
-                  </p>
-                </div>
+              </motion.div>
+
+              {/* Analysis steps */}
+              <div className="space-y-3">
+                {analysisSteps.map((step, i) => {
+                  const Icon = step.icon;
+                  const isActive = i === analysisStep;
+                  const isComplete = i < analysisStep;
+                  const isPending = i > analysisStep;
+
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{
+                        opacity: isPending ? 0.4 : 1,
+                        x: 0,
+                      }}
+                      transition={{ delay: i * 0.1, duration: 0.3 }}
+                      className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${
+                        isActive
+                          ? 'bg-primary/10 border border-primary/20'
+                          : isComplete
+                            ? 'bg-success/5 border border-success/20'
+                            : 'bg-secondary/30 border border-transparent'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                        isActive
+                          ? 'bg-primary/20'
+                          : isComplete
+                            ? 'bg-success/20'
+                            : 'bg-muted'
+                      }`}>
+                        {isComplete ? (
+                          <CheckCircle2 size={20} className="text-success" />
+                        ) : (
+                          <Icon size={20} className={isActive ? 'text-primary' : 'text-muted-foreground'} />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-sans text-sm font-medium ${
+                          isActive ? 'text-foreground' : isComplete ? 'text-success' : 'text-muted-foreground'
+                        }`}>
+                          {step.label}
+                        </p>
+                        <p className="font-sans text-xs text-muted-foreground">
+                          {step.detail}
+                        </p>
+                      </div>
+                      {isActive && (
+                        <motion.div
+                          animate={{ opacity: [1, 0.4, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                          className="w-2 h-2 rounded-full bg-primary"
+                        />
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
+
+              {/* Progress text */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-center font-sans text-xs text-muted-foreground mt-6"
+              >
+                This usually takes 10-15 seconds
+              </motion.p>
             </motion.div>
           ) : analysisData ? (
             <motion.div
