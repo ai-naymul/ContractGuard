@@ -4,8 +4,12 @@ import { ArrowRight, ArrowLeft, Upload, FileText, X, File, FileSearch, Scale, Al
 import { Link } from "react-router-dom";
 import AnalysisResults, { AnalysisData } from "@/components/AnalysisResults";
 
-const analysisSteps = [
-  { icon: FileSearch, label: "Reading document", detail: "Extracting text content" },
+const getAnalysisSteps = (hasFile: boolean) => [
+  {
+    icon: FileSearch,
+    label: hasFile ? "Reading document" : "Processing text",
+    detail: hasFile ? "Extracting text content" : "Parsing contract clause"
+  },
   { icon: Scale, label: "Analyzing clauses", detail: "Identifying key terms" },
   { icon: AlertTriangle, label: "Scanning for risks", detail: "Checking for red flags" },
   { icon: Shield, label: "Generating report", detail: "Preparing your results" },
@@ -177,15 +181,16 @@ const AnalyzePage = () => {
   useEffect(() => {
     if (isAnalyzing) {
       setAnalysisStep(0);
+      const steps = getAnalysisSteps(!!uploadedFile);
       const interval = setInterval(() => {
         setAnalysisStep((prev) => {
-          if (prev < analysisSteps.length - 1) return prev + 1;
+          if (prev < steps.length - 1) return prev + 1;
           return prev;
         });
       }, 2500);
       return () => clearInterval(interval);
     }
-  }, [isAnalyzing]);
+  }, [isAnalyzing, uploadedFile]);
 
   const canAnalyze = text.trim().length > 10 || uploadedFile;
 
@@ -380,7 +385,7 @@ const AnalyzePage = () => {
 
               {/* Analysis steps */}
               <div className="space-y-3">
-                {analysisSteps.map((step, i) => {
+                {getAnalysisSteps(!!uploadedFile).map((step, i) => {
                   const Icon = step.icon;
                   const isActive = i === analysisStep;
                   const isComplete = i < analysisStep;
