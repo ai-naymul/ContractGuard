@@ -14,8 +14,11 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <span className="label-mono inline-block px-4 py-2 rounded-full border border-border bg-card mb-8">
-              AI-POWERED CONTRACT ANALYSIS V1.0
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-8">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="font-sans text-xs font-medium tracking-wide">
+                Powered by <span className="text-primary font-semibold">DigitalOcean Gradient AI</span>
+              </span>
             </span>
 
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight text-foreground mb-6">
